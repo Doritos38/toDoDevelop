@@ -2,14 +2,15 @@ package com.example.tododevelop.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 
 @Getter
-@Setter
-public class AllViewRequestDto {
+@AllArgsConstructor
+public class AllToDoRequestDto {
 
     private String userName;
 
     private String title;
+
+    private String date;
 }

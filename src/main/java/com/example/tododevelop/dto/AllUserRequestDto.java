@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class RegistToDoRequestDto {
+public class AllUserRequestDto {
 
-    private long userId;
+    private String userName;
 
-    private String title;
+    private String email;
 
-    private String contents;
+    private String date;
 }

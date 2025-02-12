@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
-public class ResponseDto {
+public class ToDoResponseDto {
 
     private long id;
 
@@ -22,9 +22,9 @@ public class ResponseDto {
 
     private LocalDate date;
 
-    public ResponseDto (ToDo toDo){
+    public ToDoResponseDto(ToDo toDo){
         this.id = toDo.getId();
-        this.userName = toDo.getUserName();
+        this.userName = toDo.getUser().getUserName();
         this.title = toDo.getTitle();
         this.contents = toDo.getContents();
         this.date = toDo.getDate().toLocalDate();

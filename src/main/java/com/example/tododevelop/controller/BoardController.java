@@ -1,8 +1,9 @@
 package com.example.tododevelop.controller;
 
 
+import com.example.tododevelop.dto.AllToDoRequestDto;
 import com.example.tododevelop.dto.RegistToDoRequestDto;
-import com.example.tododevelop.dto.ResponseDto;
+import com.example.tododevelop.dto.ToDoResponseDto;
 import com.example.tododevelop.dto.UpdateToDoRequestDto;
 import com.example.tododevelop.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<ResponseDto> registToDo (@ModelAttribute RegistToDoRequestDto dto){
+    public ResponseEntity<ToDoResponseDto> registToDo (@ModelAttribute RegistToDoRequestDto dto){
 
         boardService.regist(dto);
 
@@ -29,20 +30,19 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto> viewToDo (@PathVariable Long id){
+    public ResponseEntity<ToDoResponseDto> viewToDo (@PathVariable Long id){
 
         return new ResponseEntity<>(boardService.view(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ResponseDto>> allViewToDo(@RequestParam(required = false) String userName,
-                                                         @RequestParam(required = false) String title){
+    public ResponseEntity<List<ToDoResponseDto>> viewAllToDo(@ModelAttribute AllToDoRequestDto dto){
 
-        return new ResponseEntity<>(boardService.allView(userName, title), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.viewAll(dto), HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<ResponseDto> updateToDo(@RequestBody UpdateToDoRequestDto dto){
+    public ResponseEntity<ToDoResponseDto> updateToDo(@RequestBody UpdateToDoRequestDto dto){
 
         boardService.updateToDo(dto);
 
@@ -50,7 +50,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> deleteToDo (@PathVariable Long id){
+    public ResponseEntity<ToDoResponseDto> deleteToDo (@PathVariable Long id){
 
         boardService.deleteToDo(id);
 

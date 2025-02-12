@@ -14,15 +14,15 @@ public class ToDo extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name")
-    private String userName;
-
     private String title;
 
     private String contents;
 
     private boolean deleted;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public void updateToDo(String title, String contents){
         this.title = title;
@@ -33,8 +33,8 @@ public class ToDo extends BaseEntity{
         this.deleted = true;
     }
 
-    public ToDo(String userName, String title, String contents){
-        this.userName = userName;
+    public ToDo(String title, String contents, User user){
+        this.user = user;
         this.title = title;
         this.contents = contents;
     }
