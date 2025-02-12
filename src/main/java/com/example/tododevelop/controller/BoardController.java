@@ -1,7 +1,7 @@
 package com.example.tododevelop.controller;
 
 
-import com.example.tododevelop.Const;
+import com.example.tododevelop.config.Const;
 import com.example.tododevelop.dto.*;
 import com.example.tododevelop.service.BoardService;
 import jakarta.validation.Valid;

@@ -11,12 +11,12 @@ import lombok.Getter;
 public class AllUserRequestDto {
 
     @Pattern(regexp = "^[a-zA-Z가-힣0-9]{1,20}$")
-    private String userName;
+    private final String userName;
 
     @Email
     @Size(max = 50)
-    private String email;
+    private final String email;
 
     @Pattern(regexp = "^(?!.*\\s)\\d{4}-\\d{2}-\\d{2}$")
-    private String date;
+    private final String date;
 }

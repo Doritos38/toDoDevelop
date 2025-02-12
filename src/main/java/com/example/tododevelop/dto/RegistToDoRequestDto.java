@@ -11,8 +11,8 @@ public class RegistToDoRequestDto {
 
     @NotNull
     @Pattern(regexp = "^[a-zA-Z가-힣0-9]{1,50}$")
-    private String title;
+    private final String title;
 
     @Pattern(regexp = "^[a-zA-Z가-힣0-9\\s!@#$%^&*()_-]{1,500}$")
-    private String contents;
+    private final String contents;
 }

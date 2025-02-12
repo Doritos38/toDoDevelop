@@ -13,14 +13,14 @@ public class RegistUserRequestDto {
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z가-힣0-9]{1,20}$")
-    private String userName;
+    private final String userName;
 
     @Email
     @Size(max = 50)
     @NotBlank
-    private String email;
+    private final String email;
 
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z가-힣!@#$%^&*(),.?\":{}|<>0-9]{1,20}$")
-    private String password;
+    private final String password;
 }

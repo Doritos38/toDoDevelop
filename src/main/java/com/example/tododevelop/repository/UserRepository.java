@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByConditions(@Param("userName") String userName, @Param("email") String email, @Param("date") LocalDate date);
 
 
-    List<User> findByEmailAndPasswordAndDeletedFalse(String email, String password);
+    List<User> findByEmail(String email);
 
 
 }

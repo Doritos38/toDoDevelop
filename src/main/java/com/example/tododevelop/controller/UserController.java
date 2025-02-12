@@ -1,10 +1,11 @@
 package com.example.tododevelop.controller;
 
-import com.example.tododevelop.Const;
+import com.example.tododevelop.config.Const;
 import com.example.tododevelop.dto.*;
 import com.example.tododevelop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<ToDoResponseDto> registUser (@ModelAttribute RegistUserRequestDto dto){
+    public ResponseEntity<ToDoResponseDto> registUser (@ModelAttribute @Valid RegistUserRequestDto dto){
 
         userService.regist(dto);
 
@@ -34,13 +35,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> viewAllUser(@ModelAttribute AllUserRequestDto dto){
+    public ResponseEntity<List<UserResponseDto>> viewAllUser(@ModelAttribute @Valid AllUserRequestDto dto){
 
         return new ResponseEntity<>(userService.viewAll(dto), HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserRequestDto dto
+    public ResponseEntity<UserResponseDto> updateUser(@RequestBody @Valid UpdateUserRequestDto dto
             , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData){
 
         userService.updateUser(dto, sessionData);
@@ -59,7 +60,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(@ModelAttribute LoginRequestDto dto, HttpServletRequest request){
+    public ResponseEntity<UserResponseDto> login(@ModelAttribute @Valid LoginRequestDto dto, HttpServletRequest request){
 
         UserResponseDto user = userService.login(dto);
 

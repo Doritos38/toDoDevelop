@@ -1,5 +1,6 @@
 package com.example.tododevelop.service;
 
+import com.example.tododevelop.config.PasswordEncoder;
 import com.example.tododevelop.dto.*;
 import com.example.tododevelop.entity.User;
 import com.example.tododevelop.repository.UserRepository;
@@ -18,12 +19,15 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
     public void regist(RegistUserRequestDto dto) {
 
-        User user = new User(dto.getUserName(), dto.getEmail(), dto.getPassword());
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+
+        User user = new User(dto.getUserName(), dto.getEmail(), encodedPassword);
 
         userRepository.save(user);
     }
@@ -63,7 +67,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByIdOrElseThrow(dto.getId());
 
         if (user.getId() != sessionData.getId()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your toDo");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your information");
         }
 
         user.updateUser(dto.getUserName(), dto.getEmail());
@@ -78,7 +82,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByIdOrElseThrow(id);
 
         if (user.getId() != sessionData.getId()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your toDo");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your information");
         }
 
         user.deleteUser();
@@ -87,9 +91,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto login(LoginRequestDto dto) {
 
-        List<User> users = userRepository.findByEmailAndPasswordAndDeletedFalse(dto.getEmail(), dto.getPassword());
+        List<User> users = userRepository.findByEmail(dto.getEmail());
 
-        User user = users.stream().findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "잘못된 입력입니다."));
+        User user = users.stream().findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong email/pw"));
+
+        if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong email/pw");
+        }
 
         return new UserResponseDto(user.getId(), user.getUserName(), user.getEmail(), user.getDate().toLocalDate());
     }

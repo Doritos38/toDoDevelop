@@ -1,6 +1,6 @@
 package com.example.tododevelop.filter;
 
-import com.example.tododevelop.Const;
+import com.example.tododevelop.config.Const;
 import com.example.tododevelop.exception.UnauthorizedException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
