@@ -4,6 +4,7 @@ package com.example.tododevelop.controller;
 import com.example.tododevelop.Const;
 import com.example.tododevelop.dto.*;
 import com.example.tododevelop.service.BoardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<ToDoResponseDto> registToDo(@ModelAttribute RegistToDoRequestDto dto
+    public ResponseEntity<ToDoResponseDto> registToDo(@ModelAttribute @Valid RegistToDoRequestDto dto
             , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData) {
 
         boardService.regist(dto, sessionData);
@@ -35,13 +36,13 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ToDoResponseDto>> viewAllToDo(@ModelAttribute AllToDoRequestDto dto) {
+    public ResponseEntity<List<ToDoResponseDto>> viewAllToDo(@ModelAttribute @Valid AllToDoRequestDto dto) {
 
         return new ResponseEntity<>(boardService.viewAll(dto), HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<ToDoResponseDto> updateToDo(@RequestBody UpdateToDoRequestDto dto
+    public ResponseEntity<ToDoResponseDto> updateToDo(@RequestBody @Valid UpdateToDoRequestDto dto
             , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData) {
 
         boardService.updateToDo(dto, sessionData);

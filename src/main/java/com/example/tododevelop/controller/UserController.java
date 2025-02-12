@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto
+    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserRequestDto dto
             , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData){
 
         userService.updateUser(dto, sessionData);

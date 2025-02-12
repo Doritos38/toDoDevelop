@@ -7,8 +7,10 @@ import com.example.tododevelop.entity.User;
 import com.example.tododevelop.repository.BoardRepository;
 import com.example.tododevelop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.time.LocalDate;
@@ -35,6 +37,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ToDoResponseDto view(Long id) {
+
+        isIdNull(id);
 
         ToDo toDo = boardRepository.findByIdOrElseThrow(id);
 
@@ -73,9 +77,17 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void deleteToDo(Long id, UserResponseDto sessionData) {
 
+        isIdNull(id);
+
         ToDo toDo = boardRepository.findByIdAndUserIdOrElseThrow(id, sessionData.getId());
 
         toDo.deleteToDo();
+    }
+
+    public void isIdNull(Long id){
+        if(id == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id Not found");
+        }
     }
 
 

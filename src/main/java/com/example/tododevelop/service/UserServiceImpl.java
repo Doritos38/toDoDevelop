@@ -31,6 +31,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto view(Long id) {
 
+        isIdNull(id);
+
         User user = userRepository.findByIdOrElseThrow(id);
 
         UserResponseDto dto = new UserResponseDto(user);
@@ -56,11 +58,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(UpdateUserDto dto, UserResponseDto sessionData) {
+    public void updateUser(UpdateUserRequestDto dto, UserResponseDto sessionData) {
 
         User user = userRepository.findByIdOrElseThrow(dto.getId());
 
-        if(user.getId() != sessionData.getId()){
+        if (user.getId() != sessionData.getId()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your toDo");
         }
 
@@ -71,9 +73,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id, UserResponseDto sessionData) {
 
+        isIdNull(id);
+
         User user = userRepository.findByIdOrElseThrow(id);
 
-        if(user.getId() != sessionData.getId()){
+        if (user.getId() != sessionData.getId()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your toDo");
         }
 
@@ -82,7 +86,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto login(LoginRequestDto dto) {
-        System.out.println("                 "+dto.getEmail() + dto.getPassword()+"                              dsfs");
 
         List<User> users = userRepository.findByEmailAndPasswordAndDeletedFalse(dto.getEmail(), dto.getPassword());
 
@@ -90,4 +93,11 @@ public class UserServiceImpl implements UserService {
 
         return new UserResponseDto(user.getId(), user.getUserName(), user.getEmail(), user.getDate().toLocalDate());
     }
+
+    public void isIdNull(Long id){
+        if(id == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id Not found");
+        }
+    }
+
 }

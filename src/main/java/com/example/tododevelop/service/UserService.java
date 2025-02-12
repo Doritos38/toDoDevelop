@@ -11,7 +11,7 @@ public interface UserService {
 
     List<UserResponseDto> viewAll(AllUserRequestDto dto);
 
-    void updateUser(UpdateUserDto dto, UserResponseDto sessionData);
+    void updateUser(UpdateUserRequestDto dto, UserResponseDto sessionData);
 
     void deleteUser(Long id, UserResponseDto sessionData);
 
