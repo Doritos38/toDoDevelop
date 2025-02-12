@@ -10,4 +10,6 @@ public class RegistUserRequestDto {
     private String userName;
 
     private String email;
+
+    private String password;
 }

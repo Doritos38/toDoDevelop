@@ -25,6 +25,7 @@ public class ToDoResponseDto {
     public ToDoResponseDto(ToDo toDo){
         this.id = toDo.getId();
         this.userName = toDo.getUser().getUserName();
+        this.userId = toDo.getUser().getId();
         this.title = toDo.getTitle();
         this.contents = toDo.getContents();
         this.date = toDo.getDate().toLocalDate();

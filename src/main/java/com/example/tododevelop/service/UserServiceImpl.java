@@ -21,10 +21,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void regist(RegistUserRequestDto dto) {
 
-        User user = new User(dto.getUserName(), dto.getEmail());
+        User user = new User(dto.getUserName(), dto.getEmail(), dto.getPassword());
 
         userRepository.save(user);
-
     }
 
     @Override
@@ -43,9 +42,9 @@ public class UserServiceImpl implements UserService {
 
         LocalDate date;
 
-        if(dto.getDate() == null){
+        if (dto.getDate() == null) {
             date = null;
-        }else{
+        } else {
             date = LocalDate.parse(dto.getDate());
         }
 
