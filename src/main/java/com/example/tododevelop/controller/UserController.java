@@ -1,7 +1,10 @@
 package com.example.tododevelop.controller;
 
+import com.example.tododevelop.Const;
 import com.example.tododevelop.dto.*;
 import com.example.tododevelop.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +42,7 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto){
 
-        userService.updateToDo(dto);
+        userService.updateUser(dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -47,7 +50,32 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ToDoResponseDto> deleteUser (@PathVariable Long id){
 
-        userService.deleteToDo(id);
+        userService.deleteUser(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDto> login(@ModelAttribute LoginRequestDto dto, HttpServletRequest request){
+
+        UserResponseDto user = userService.login(dto);
+
+        HttpSession session = request.getSession();
+
+        session.setAttribute(Const.LOGIN_USER, user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<UserResponseDto> logout(HttpServletRequest request){
+
+        HttpSession session = request.getSession(false);
+
+        if(session != null){
+            session.invalidate();
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -4,8 +4,10 @@ import com.example.tododevelop.dto.*;
 import com.example.tododevelop.entity.User;
 import com.example.tododevelop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,10 +33,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByIdOrElseThrow(id);
 
-        UserResponseDto userResponseDto = new UserResponseDto(user);
+        UserResponseDto dto = new UserResponseDto(user);
 
-
-        return userResponseDto;
+        return dto;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateToDo(UpdateUserDto dto) {
+    public void updateUser(UpdateUserDto dto) {
 
         User user = userRepository.findByIdOrElseThrow(dto.getId());
 
@@ -64,10 +65,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteToDo(Long id) {
+    public void deleteUser(Long id) {
 
         User user = userRepository.findByIdOrElseThrow(id);
 
         user.deleteUser();
+    }
+
+    @Override
+    public UserResponseDto login(LoginRequestDto dto) {
+        System.out.println("                 "+dto.getEmail() + dto.getPassword()+"                              dsfs");
+
+        List<User> users = userRepository.findByEmailAndPasswordAndDeletedFalse(dto.getEmail(), dto.getPassword());
+
+        User user = users.stream().findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "잘못된 입력입니다."));
+
+        return new UserResponseDto(user.getId(), user.getUserName(), user.getEmail(), user.getDate().toLocalDate());
     }
 }

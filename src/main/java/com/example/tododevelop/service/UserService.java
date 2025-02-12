@@ -11,7 +11,9 @@ public interface UserService {
 
     List<UserResponseDto> viewAll(AllUserRequestDto dto);
 
-    void updateToDo(UpdateUserDto dto);
+    void updateUser(UpdateUserDto dto);
 
-    void deleteToDo(Long id);
+    void deleteUser(Long id);
+
+    UserResponseDto login(LoginRequestDto dto);
 }
