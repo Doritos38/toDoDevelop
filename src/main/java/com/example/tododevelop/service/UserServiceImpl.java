@@ -56,18 +56,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(UpdateUserDto dto) {
+    public void updateUser(UpdateUserDto dto, UserResponseDto sessionData) {
 
         User user = userRepository.findByIdOrElseThrow(dto.getId());
+
+        if(user.getId() != sessionData.getId()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your toDo");
+        }
 
         user.updateUser(dto.getUserName(), dto.getEmail());
     }
 
     @Override
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteUser(Long id, UserResponseDto sessionData) {
 
         User user = userRepository.findByIdOrElseThrow(id);
+
+        if(user.getId() != sessionData.getId()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your toDo");
+        }
 
         user.deleteUser();
     }

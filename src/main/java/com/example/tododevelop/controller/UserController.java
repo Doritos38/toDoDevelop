@@ -40,17 +40,19 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto){
+    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UpdateUserDto dto
+            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData){
 
-        userService.updateUser(dto);
+        userService.updateUser(dto, sessionData);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ToDoResponseDto> deleteUser (@PathVariable Long id){
+    public ResponseEntity<ToDoResponseDto> deleteUser (@PathVariable Long id
+            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData){
 
-        userService.deleteUser(id);
+        userService.deleteUser(id, sessionData);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

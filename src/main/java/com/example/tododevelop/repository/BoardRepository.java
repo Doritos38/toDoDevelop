@@ -18,11 +18,17 @@ public interface BoardRepository extends JpaRepository<ToDo, Long> {
     Optional<ToDo> findByIdAndDeletedFalse(Long id);
 
     default ToDo findByIdOrElseThrow(Long id){
-        return findByIdAndDeletedFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "없는 id"));
+        return findByIdAndDeletedFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found"));
     }
 
     @Query("SELECT t FROM ToDo t WHERE (:userName IS NULL OR t.user.userName = :userName) AND (:title IS NULL OR t.title = :title) " +
             "AND (:date IS NULL OR DATE(t.date) = :date) AND t.deleted = false")
     List<ToDo> findAllByConditions(@Param("userName") String userName, @Param("title") String title, @Param("date") LocalDate date);
+
+    Optional<ToDo> findByIdAndUserIdAndDeletedFalse(Long id, Long userId);
+
+    default ToDo findByIdAndUserIdOrElseThrow(Long id, Long userId){
+        return findByIdAndUserIdAndDeletedFalse(id, userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found"));
+    }
 
 }

@@ -1,10 +1,8 @@
 package com.example.tododevelop.controller;
 
 
-import com.example.tododevelop.dto.AllToDoRequestDto;
-import com.example.tododevelop.dto.RegistToDoRequestDto;
-import com.example.tododevelop.dto.ToDoResponseDto;
-import com.example.tododevelop.dto.UpdateToDoRequestDto;
+import com.example.tododevelop.Const;
+import com.example.tododevelop.dto.*;
 import com.example.tododevelop.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,37 +20,40 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity<ToDoResponseDto> registToDo (@ModelAttribute RegistToDoRequestDto dto){
+    public ResponseEntity<ToDoResponseDto> registToDo(@ModelAttribute RegistToDoRequestDto dto
+            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData) {
 
-        boardService.regist(dto);
+        boardService.regist(dto, sessionData);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ToDoResponseDto> viewToDo (@PathVariable Long id){
+    public ResponseEntity<ToDoResponseDto> viewToDo(@PathVariable Long id) {
 
         return new ResponseEntity<>(boardService.view(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ToDoResponseDto>> viewAllToDo(@ModelAttribute AllToDoRequestDto dto){
+    public ResponseEntity<List<ToDoResponseDto>> viewAllToDo(@ModelAttribute AllToDoRequestDto dto) {
 
         return new ResponseEntity<>(boardService.viewAll(dto), HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity<ToDoResponseDto> updateToDo(@RequestBody UpdateToDoRequestDto dto){
+    public ResponseEntity<ToDoResponseDto> updateToDo(@RequestBody UpdateToDoRequestDto dto
+            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData) {
 
-        boardService.updateToDo(dto);
+        boardService.updateToDo(dto, sessionData);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ToDoResponseDto> deleteToDo (@PathVariable Long id){
+    public ResponseEntity<ToDoResponseDto> deleteToDo(@PathVariable Long id
+            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData) {
 
-        boardService.deleteToDo(id);
+        boardService.deleteToDo(id, sessionData);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

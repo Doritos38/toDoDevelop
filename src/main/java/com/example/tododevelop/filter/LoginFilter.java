@@ -1,8 +1,10 @@
 package com.example.tododevelop.filter;
 
 import com.example.tododevelop.Const;
+import com.example.tododevelop.exception.UnauthorizedException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.util.PatternMatchUtils;
 
@@ -18,19 +20,28 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String requestURI = httpRequest.getRequestURI();
 
-        if (!isWhiteList(requestURI)) {
+        HttpServletResponse httpResponse = (HttpServletResponse) SerVletResponse;
 
-            HttpSession session = httpRequest.getSession(false);
 
-            if (session == null || session.getAttribute(Const.LOGIN_USER) == null) {
+        try {
+            if (!isWhiteList(requestURI)) {
 
-                throw new RuntimeException("로그인 안됨");
+                HttpSession session = httpRequest.getSession(false);
+
+                if (session == null || session.getAttribute(Const.LOGIN_USER) == null) {
+
+                    throw new RuntimeException("User Only");
+                }
             }
+            filterChain.doFilter(servletRequest, SerVletResponse);
 
-
+        }catch (UnauthorizedException e){
+            httpRequest.setAttribute("exception", e);
+            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         }
 
-        filterChain.doFilter(servletRequest, SerVletResponse);
+
+
 
     }
 

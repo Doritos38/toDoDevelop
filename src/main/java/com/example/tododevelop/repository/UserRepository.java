@@ -28,4 +28,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     List<User> findByEmailAndPasswordAndDeletedFalse(String email, String password);
+
+
 }

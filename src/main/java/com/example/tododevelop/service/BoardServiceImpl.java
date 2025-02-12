@@ -1,13 +1,11 @@
 package com.example.tododevelop.service;
 
 
-import com.example.tododevelop.dto.AllToDoRequestDto;
-import com.example.tododevelop.dto.RegistToDoRequestDto;
-import com.example.tododevelop.dto.ToDoResponseDto;
-import com.example.tododevelop.dto.UpdateToDoRequestDto;
+import com.example.tododevelop.dto.*;
 import com.example.tododevelop.entity.ToDo;
 import com.example.tododevelop.entity.User;
 import com.example.tododevelop.repository.BoardRepository;
+import com.example.tododevelop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +20,13 @@ import java.util.stream.Collectors;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final com.example.tododevelop.repository.UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public void regist(RegistToDoRequestDto dto) {
+    public void regist(RegistToDoRequestDto dto, UserResponseDto sessionData) {
 
-        User user = userRepository.findByIdOrElseThrow(dto.getUserId());
+        User user = userRepository.findByIdOrElseThrow(sessionData.getId());
 
         ToDo toDo = new ToDo(dto.getTitle(), dto.getContents(), user);
 
@@ -40,9 +38,9 @@ public class BoardServiceImpl implements BoardService {
 
         ToDo toDo = boardRepository.findByIdOrElseThrow(id);
 
-        ToDoResponseDto toDoResponseDto = new ToDoResponseDto(toDo);
+        ToDoResponseDto dto = new ToDoResponseDto(toDo);
 
-        return toDoResponseDto;
+        return dto;
     }
 
     @Override
@@ -64,18 +62,18 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void updateToDo(UpdateToDoRequestDto dto) {
+    public void updateToDo(UpdateToDoRequestDto dto, UserResponseDto sessionData) {
 
-        ToDo toDo = boardRepository.findByIdOrElseThrow(dto.getId());
+        ToDo toDo = boardRepository.findByIdAndUserIdOrElseThrow(dto.getId(), sessionData.getId());
 
         toDo.updateToDo(dto.getTitle(), dto.getContents());
     }
 
     @Override
     @Transactional
-    public void deleteToDo(Long id) {
+    public void deleteToDo(Long id, UserResponseDto sessionData) {
 
-        ToDo toDo = boardRepository.findByIdOrElseThrow(id);
+        ToDo toDo = boardRepository.findByIdAndUserIdOrElseThrow(id, sessionData.getId());
 
         toDo.deleteToDo();
     }

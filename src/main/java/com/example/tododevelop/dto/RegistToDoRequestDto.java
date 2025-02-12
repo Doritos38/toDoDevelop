@@ -7,8 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class RegistToDoRequestDto {
 
-    private long userId;
-
     private String title;
 
     private String contents;
