@@ -1,6 +1,9 @@
 package com.example.tododevelop.repository;
 
 import com.example.tododevelop.entity.ToDo;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,7 +31,7 @@ public interface BoardRepository extends JpaRepository<ToDo, Long> {
     Optional<ToDo> findByIdAndUserIdAndDeletedFalse(Long id, Long userId);
 
     default ToDo findByIdAndUserIdOrElseThrow(Long id, Long userId){
-        return findByIdAndUserIdAndDeletedFalse(id, userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found"));
+        return findByIdAndUserIdAndDeletedFalse(id, userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not yout toDo"));
     }
 
 }

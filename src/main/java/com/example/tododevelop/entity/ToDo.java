@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @Table(name = "todo")
 @NoArgsConstructor
-public class ToDo extends BaseEntity{
+public class ToDo extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,16 +27,19 @@ public class ToDo extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateToDo(String title, String contents){
+    @OneToMany(mappedBy = "toDo")
+    private List<Comments> comments = new ArrayList<>();
+
+    public void updateToDo(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
 
-    public void deleteToDo(){
+    public void deleteToDo() {
         this.deleted = true;
     }
 
-    public ToDo(String title, String contents, User user){
+    public ToDo(String title, String contents, User user) {
         this.user = user;
         this.title = title;
         this.contents = contents;

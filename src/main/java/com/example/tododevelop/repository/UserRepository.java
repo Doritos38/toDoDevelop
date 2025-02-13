@@ -1,7 +1,11 @@
 package com.example.tododevelop.repository;
 
 
+import com.example.tododevelop.entity.ToDo;
 import com.example.tododevelop.entity.User;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,5 +33,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByEmail(String email);
 
+    @Query("SELECT u FROM User u WHERE u.id = :id AND u.id = :userId AND u.deleted = false")
+    Optional<User> findByIdAndIdAndDeletedFalse(Long id, Long userId);
 
+    default User findByIdAndUserIdOrElseThrow(Long id, Long userId){
+        return findByIdAndIdAndDeletedFalse(id, userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your information"));
+    }
 }

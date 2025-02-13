@@ -29,7 +29,5 @@ public class ToDoResponseDto {
         this.title = toDo.getTitle();
         this.contents = toDo.getContents();
         this.date = toDo.getDate().toLocalDate();
-
-
     }
 }

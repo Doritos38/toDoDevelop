@@ -19,3 +19,14 @@ CREATE TABLE user
     update_date DATETIME,
     deleted   BOOLEAN NOT NULL DEFAULT FALSE
 );
+
+CREATE TABLE comments
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    contents    VARCHAR(500),
+    user_id     INT NOT NULL,
+    todo_id     INT NOT NULL,
+    date       DATETIME,
+    update_date DATETIME,
+    deleted   BOOLEAN NOT NULL DEFAULT FALSE
+);

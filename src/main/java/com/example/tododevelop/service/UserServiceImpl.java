@@ -4,6 +4,9 @@ import com.example.tododevelop.config.PasswordEncoder;
 import com.example.tododevelop.dto.*;
 import com.example.tododevelop.entity.User;
 import com.example.tododevelop.repository.UserRepository;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,7 +38,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto view(Long id) {
 
-        isIdNull(id);
+        if(verify(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong range id");
+        }
 
         User user = userRepository.findByIdOrElseThrow(id);
 
@@ -64,11 +69,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUser(UpdateUserRequestDto dto, UserResponseDto sessionData) {
 
-        User user = userRepository.findByIdOrElseThrow(dto.getId());
-
-        if (user.getId() != sessionData.getId()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your information");
-        }
+        User user = userRepository.findByIdAndUserIdOrElseThrow(dto.getId(), sessionData.getId());
 
         user.updateUser(dto.getUserName(), dto.getEmail());
     }
@@ -77,13 +78,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id, UserResponseDto sessionData) {
 
-        isIdNull(id);
-
-        User user = userRepository.findByIdOrElseThrow(id);
-
-        if (user.getId() != sessionData.getId()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your information");
+        if(verify(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong range id");
         }
+
+        User user = userRepository.findByIdAndUserIdOrElseThrow(id, sessionData.getId());
 
         user.deleteUser();
     }
@@ -95,17 +94,17 @@ public class UserServiceImpl implements UserService {
 
         User user = users.stream().findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong email/pw"));
 
-        if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong email/pw");
         }
 
         return new UserResponseDto(user.getId(), user.getUserName(), user.getEmail(), user.getDate().toLocalDate());
     }
 
-    public void isIdNull(Long id){
-        if(id == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "id Not found");
+    public boolean verify(Long id) {
+        if (id < 1 || id > 500) {
+            return true;
         }
+        return false;
     }
-
 }

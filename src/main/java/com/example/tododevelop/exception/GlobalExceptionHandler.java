@@ -11,10 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralException(Exception e) {
-        return new ResponseEntity<>("Server Error.", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<String> handleGeneralException(Exception e) {
+//        return new ResponseEntity<>("Server Error.", HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidException(MethodArgumentNotValidException e) {     //  Valid 관련 예외처리 핸들러
@@ -39,15 +39,5 @@ public class GlobalExceptionHandler {
         errorMessage.append(e.getReason() != null ? " " + e.getReason() : " Unknown error");
 
         return new ResponseEntity<>(errorMessage.toString(), e.getStatusCode());
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<String> handleUnauthorizedException(UnauthorizedException e) {    // 로그인 관련 핸들러
-
-        StringBuilder errorMessage = new StringBuilder("Unauthorized Error : ");
-
-        errorMessage.append(e.getMessage() != null ? " " + e.getMessage() : " Unknown error");
-
-        return new ResponseEntity<>(errorMessage.toString(), HttpStatus.UNAUTHORIZED);
     }
 }

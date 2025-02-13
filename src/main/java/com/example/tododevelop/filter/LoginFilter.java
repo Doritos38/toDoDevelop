@@ -1,7 +1,6 @@
 package com.example.tododevelop.filter;
 
 import com.example.tododevelop.config.Const;
-import com.example.tododevelop.exception.UnauthorizedException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +11,7 @@ import java.io.IOException;
 
 public class LoginFilter implements Filter {
 
-    private static final String[] WHITE_LIST = {"/" ,"/users/login", "/users/regi"};
+    private static final String[] WHITE_LIST = {"/", "/users/login", "/users/regi"};
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse SerVletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -23,25 +22,19 @@ public class LoginFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) SerVletResponse;
 
 
-        try {
-            if (!isWhiteList(requestURI)) {
+        if (!isWhiteList(requestURI)) {
 
-                HttpSession session = httpRequest.getSession(false);
+            HttpSession session = httpRequest.getSession(false);
 
-                if (session == null || session.getAttribute(Const.LOGIN_USER) == null) {
-
-                    throw new RuntimeException("User Only");
-                }
+            if (session == null || session.getAttribute(Const.LOGIN_USER) == null) {
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.setContentType("application/json");
+                httpResponse.getWriter().write("{\"error\":\"Unauthorized\", \"message\":\"User Only\"}");
+                //httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User Only");
+                return;
             }
-            filterChain.doFilter(servletRequest, SerVletResponse);
-
-        }catch (UnauthorizedException e){
-            httpRequest.setAttribute("exception", e);
-            httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         }
-
-
-
+        filterChain.doFilter(servletRequest, SerVletResponse);
 
     }
 
