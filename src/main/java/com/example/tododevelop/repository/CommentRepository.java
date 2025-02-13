@@ -17,15 +17,13 @@ public interface CommentRepository extends JpaRepository<Comments, Long> {
 
     Optional<Comments> findByIdAndDeletedFalse(Long id);
 
-    default Comments findByIdOrElseThrow(Long id) {
+    default Comments findByIdOrElseThrow(Long id){
         return findByIdAndDeletedFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found"));
     }
 
     Optional<Comments> findByIdAndUserIdAndDeletedFalse(Long id, Long userId);
 
-    default Comments findByIdAndUserIdOrElseThrow(long id, long userId) {
+    default Comments findByIdAndUserIdOrElseThrow(long id, long userId){
         return findByIdAndUserIdAndDeletedFalse(id, userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not yout toDo"));
-    }
-
-    ;
+    };
 }

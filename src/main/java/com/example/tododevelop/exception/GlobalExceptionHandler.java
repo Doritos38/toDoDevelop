@@ -11,10 +11,10 @@ import org.springframework.web.server.ResponseStatusException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralException(Exception e) {     // 최상위 예최처리 핸들러
-        return new ResponseEntity<>("Server Error.", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<String> handleGeneralException(Exception e) {
+//        return new ResponseEntity<>("Server Error.", HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidException(MethodArgumentNotValidException e) {     //  Valid 관련 예외처리 핸들러

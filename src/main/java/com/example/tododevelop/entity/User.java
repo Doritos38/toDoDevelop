@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "user")
 @NoArgsConstructor
-public class User extends BaseEntity {
+public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +29,12 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public void updateUser(String userName, String email) {
+    public void updateUser(String userName, String email){
         this.userName = userName;
         this.email = email;
     }
 
-    public void deleteUser() {
+    public void deleteUser(){
         this.deleted = true;
     }
 }
