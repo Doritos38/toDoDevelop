@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto view(Long id) {
 
-        if(verify(id)){
+        if (verify(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong range id");
         }
 
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long id, UserResponseDto sessionData) {
 
-        if(verify(id)){
+        if (verify(id)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong range id");
         }
 

@@ -10,6 +10,10 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,6 +93,16 @@ public class BoardServiceImpl implements BoardService {
         ToDo toDo = boardRepository.findByIdAndUserIdOrElseThrow(id, sessionData.getId());
 
         toDo.deleteToDo();
+    }
+
+    @Override
+    public Page<ToDoPageResponseDto> pagingToDo(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("updateDate")));
+
+        Page<ToDo> toDos = boardRepository.findAll(pageable);
+
+        return toDos.map(ToDoPageResponseDto::new);
     }
 
     public boolean verify(Long id) {

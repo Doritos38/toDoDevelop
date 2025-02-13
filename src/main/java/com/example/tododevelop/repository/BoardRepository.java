@@ -20,7 +20,7 @@ public interface BoardRepository extends JpaRepository<ToDo, Long> {
 
     Optional<ToDo> findByIdAndDeletedFalse(Long id);
 
-    default ToDo findByIdOrElseThrow(Long id){
+    default ToDo findByIdOrElseThrow(Long id) {
         return findByIdAndDeletedFalse(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id Not Found"));
     }
 
@@ -30,7 +30,7 @@ public interface BoardRepository extends JpaRepository<ToDo, Long> {
 
     Optional<ToDo> findByIdAndUserIdAndDeletedFalse(Long id, Long userId);
 
-    default ToDo findByIdAndUserIdOrElseThrow(Long id, Long userId){
+    default ToDo findByIdAndUserIdOrElseThrow(Long id, Long userId) {
         return findByIdAndUserIdAndDeletedFalse(id, userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not yout toDo"));
     }
 

@@ -5,7 +5,10 @@ import com.example.tododevelop.config.Const;
 import com.example.tododevelop.dto.*;
 import com.example.tododevelop.service.BoardService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +60,13 @@ public class BoardController {
         boardService.deleteToDo(id, sessionData);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/paging")
+    public ResponseEntity<Page<ToDoPageResponseDto>> pagingToDo(@RequestParam(defaultValue = "10") @NotNull @Min(1) int page
+            , @RequestParam(defaultValue = "1") @NotNull @Min(1) int size) {
+
+        return new ResponseEntity<>(boardService.pagingToDo(page, size), HttpStatus.OK);
     }
 
 

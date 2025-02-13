@@ -20,7 +20,7 @@ public class CommentResponseDto {
 
     private LocalDate date;
 
-    public CommentResponseDto(Comments comments){
+    public CommentResponseDto(Comments comments) {
         this.id = comments.getId();
         this.contents = comments.getContents();
         this.userId = comments.getToDo().getUser().getId();

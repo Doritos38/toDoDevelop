@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/regi")
-    public ResponseEntity<ToDoResponseDto> registUser (@ModelAttribute @Valid RegistUserRequestDto dto){
+    public ResponseEntity<ToDoResponseDto> registUser(@ModelAttribute @Valid RegistUserRequestDto dto) {
 
         userService.regist(dto);
 
@@ -29,20 +29,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> viewUser (@PathVariable Long id){
+    public ResponseEntity<UserResponseDto> viewUser(@PathVariable Long id) {
 
         return new ResponseEntity<>(userService.view(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> viewAllUser(@ModelAttribute @Valid AllUserRequestDto dto){
+    public ResponseEntity<List<UserResponseDto>> viewAllUser(@ModelAttribute @Valid AllUserRequestDto dto) {
 
         return new ResponseEntity<>(userService.viewAll(dto), HttpStatus.OK);
     }
 
     @PatchMapping
     public ResponseEntity<UserResponseDto> updateUser(@RequestBody @Valid UpdateUserRequestDto dto
-            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData){
+            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData) {
 
         userService.updateUser(dto, sessionData);
 
@@ -50,8 +50,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ToDoResponseDto> deleteUser (@PathVariable Long id
-            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData){
+    public ResponseEntity<ToDoResponseDto> deleteUser(@PathVariable Long id
+            , @SessionAttribute(name = Const.LOGIN_USER) UserResponseDto sessionData) {
 
         userService.deleteUser(id, sessionData);
 
@@ -60,7 +60,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(@ModelAttribute @Valid LoginRequestDto dto, HttpServletRequest request){
+    public ResponseEntity<UserResponseDto> login(@ModelAttribute @Valid LoginRequestDto dto, HttpServletRequest request) {
 
         UserResponseDto user = userService.login(dto);
 
@@ -72,11 +72,11 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<UserResponseDto> logout(HttpServletRequest request){
+    public ResponseEntity<UserResponseDto> logout(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
 
-        if(session != null){
+        if (session != null) {
             session.invalidate();
         }
 

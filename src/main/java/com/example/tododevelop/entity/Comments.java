@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "comments")
 @NoArgsConstructor
-public class Comments extends BaseEntity{
+public class Comments extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +25,15 @@ public class Comments extends BaseEntity{
     @JoinColumn(name = "todo_id")
     private ToDo toDo;
 
-    public void updateComment(String contents){
+    public void updateComment(String contents) {
         this.contents = contents;
     }
 
-    public void deleteComment(){
+    public void deleteComment() {
         this.deleted = true;
     }
 
-    public Comments( String contents, ToDo toDo){
+    public Comments(String contents, ToDo toDo) {
         this.userId = toDo.getUser().getId();
         this.contents = contents;
         this.toDo = toDo;
